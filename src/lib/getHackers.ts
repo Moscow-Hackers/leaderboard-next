@@ -29,7 +29,7 @@ export async function getHackers(): Promise<MoscowHacker[]> {
             .use(parseFrontmatter)
             .process(await read(filePath))
 
-          return markdown.data.frontmatter
+          return markdown.data.frontmatter as MoscowHacker
         })
     )
   } catch (err) {

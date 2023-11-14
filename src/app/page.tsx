@@ -8,23 +8,21 @@ import { getPwnCollegeHackers } from '@/lib/getPwnCollegeHackers'
 import { getBlurredImage } from '@/lib/getBlurredImage'
 import { Leaderboard } from '@/components/Leaderboard'
 
-async function getBlurredImages(
-  hackers: MoscowHacker[]
-): Promise<PwnCollegeHackerWithImage[]> {
-  return await Promise.all(
+const getBlurredImages = async (
+  hackers: PwnCollegeHacker[]
+): Promise<PwnCollegeHackerWithImage[]> =>
+  await Promise.all(
     hackers.map(
-      ({ avatar, ...hacker }) =>
-        new Promise(async (resolve) => {
-          if (avatar) {
-            const image = await getBlurredImage(avatar)
-            resolve({ avatar, image, ...hacker })
-          } else {
-            resolve({ avatar, ...hacker })
-          }
-        })
+      async ({ avatar, ...hacker }): Promise<PwnCollegeHackerWithImage> => {
+        if (avatar) {
+          const image = await getBlurredImage(avatar)
+          return { avatar, image, ...hacker }
+        } else {
+          return { avatar, ...hacker }
+        }
+      }
     )
   )
-}
 
 async function getData(): Promise<PwnCollegeHackerWithImage[]> {
   const hackers = await getHackers()

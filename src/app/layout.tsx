@@ -6,7 +6,7 @@ import { DarkModeSwitch } from '@/components/DarkModeSwitch'
 import { cn } from '@/lib/utils'
 import './globals.css'
 
-export const fontMono = FontMono({
+const fontMono = FontMono({
   weight: '400',
   subsets: ['latin'],
   variable: '--font-mono',

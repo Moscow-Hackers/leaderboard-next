@@ -20,10 +20,10 @@ import {
   TableBody,
   Table,
 } from '@/components/ui/table'
-import { PwnCollegeHacker } from '@/types'
+import { PwnCollegeHackerWithImage } from '@/types'
 
 type LeaderboardProps = {
-  hackers: PwnCollegeHacker[]
+  hackers: PwnCollegeHackerWithImage[]
 }
 
 export function Leaderboard({ hackers }: LeaderboardProps) {
