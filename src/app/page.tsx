@@ -1,39 +1,9 @@
-import {
-  MoscowHacker,
-  PwnCollegeHacker,
-  PwnCollegeHackerWithImage,
-} from '@/types'
-import { getHackers } from '@/lib/getHackers'
-import { getPwnCollegeHackers } from '@/lib/getPwnCollegeHackers'
-import { getBlurredImage } from '@/lib/getBlurredImage'
+import { Suspense } from 'react'
+
 import { Leaderboard } from '@/components/Leaderboard'
-
-const getBlurredImages = async (
-  hackers: PwnCollegeHacker[]
-): Promise<PwnCollegeHackerWithImage[]> =>
-  await Promise.all(
-    hackers.map(
-      async ({ avatar, ...hacker }): Promise<PwnCollegeHackerWithImage> => {
-        if (avatar) {
-          const image = await getBlurredImage(avatar)
-          return { avatar, image, ...hacker }
-        } else {
-          return { avatar, ...hacker }
-        }
-      }
-    )
-  )
-
-async function getData(): Promise<PwnCollegeHackerWithImage[]> {
-  const hackers = await getHackers()
-  const pwnCollegeHackers = await getPwnCollegeHackers(hackers)
-  const pwnCollegeHackersWithImage = await getBlurredImages(pwnCollegeHackers)
-
-  return pwnCollegeHackersWithImage.sort((a, b) => b.solves - a.solves)
-}
+import { LoadingLeaderboard } from '@/components/LoadingLeaderboard'
 
 export default async function Home() {
-  const hackers = await getData()
   // console.log('Page loaded', hackers)
 
   return (
@@ -45,7 +15,9 @@ export default async function Home() {
         Leaderboard
       </h2>
 
-      <Leaderboard hackers={hackers} />
+      <Suspense fallback={<LoadingLeaderboard />}>
+        <Leaderboard />
+      </Suspense>
     </div>
   )
 }

@@ -8,7 +8,8 @@ export const getPwnCollegeHackers = async (
       ({ pwnCollegeId, ...hacker }: MoscowHacker) =>
         new Promise<PwnCollegeHacker>(async (resolve) => {
           const response = await fetch(
-            `https://pwn.college/api/v1/users/${pwnCollegeId}/solves`
+            `https://pwn.college/api/v1/users/${pwnCollegeId}/solves`,
+            { next: { revalidate: 60 } }
           )
           const {
             meta: { count: solves },
